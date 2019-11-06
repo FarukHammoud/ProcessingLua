@@ -12,7 +12,7 @@ def setup():
     sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
     #'192.168.24.110'
     sock.bind(('127.0.0.1',4200))
-    size(1500,1000,P3D)
+    fullScreen(P2D)
     println('inicialized')
 def mousePressed():
     print('mousePressed')
@@ -29,6 +29,6 @@ def draw():
             exec(data)
         except BaseException as err:
             print('error: '+str(err))
-        #returnConfirmation(addr)
+        returnConfirmation(addr)
     
         

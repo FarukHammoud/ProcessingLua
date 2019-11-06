@@ -37,9 +37,6 @@ end
 function P.ip()
 	return assert(socket.dns.toip('localhost'))
 end
-function P.ellipse(...)
-	std_function('ellipse',...)
-end
 function P.background(...)
 	std_function('background',...)
 end
