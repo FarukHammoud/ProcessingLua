@@ -8,13 +8,21 @@ local socket = require "socket"
 local ip = '127.0.0.1'
 local port = 4200
 
-local unconnected = socket.udp()
+local client = socket.tcp()
+client:connect(ip,port)
+--client:settimeout(1)
+
+--local unconnected = socket.udp()
 
 local function send_command(command)
-	unconnected:sendto(command,ip,port)
+	--unconnected:sendto(command,ip,port)
+	client:send(command)
 	if PRINT_FLAG then
 		print('sending '..command..' to',ip,port)
 	end
+	data = client:receive()
+	print(data)
+	client:close()
 end
 
 local function std_function(name,...)
@@ -36,6 +44,9 @@ end
 
 function P.ip()
 	return assert(socket.dns.toip('localhost'))
+end
+function P.ellipse(...)
+	std_function('ellipse',...)
 end
 function P.background(...)
 	std_function('background',...)
@@ -104,6 +115,7 @@ function P.line(...)
 	std_function('line',...)
 end
 
+--client:close()
 --unconnected:close()
 
 return P

@@ -1,6 +1,6 @@
 local P = {}
 
-local PRINT_FLAG = true
+local PRINT_FLAG = false
 
 local socket = require "socket"
 
@@ -8,10 +8,21 @@ local socket = require "socket"
 local ip = '127.0.0.1'
 local port = 4200
 
-local unconnected = socket.udp()
+local client = socket.tcp()
+client:connect(ip,port)
+client:settimeout(1)
+
+--local unconnected = socket.udp()
+
+commands_line = ''
 
 local function send_command(command)
-	unconnected:sendto(command,ip,port)
+	--unconnected:sendto(command,ip,port)
+	commands_line = commands_line..command..';'
+	if command == 'redraw()' or string.len(commands_line) > 1024 then
+		client:send(commands_line)
+		commands_line = ''
+	end
 	if PRINT_FLAG then
 		print('sending '..command..' to',ip,port)
 	end
@@ -107,6 +118,7 @@ function P.line(...)
 	std_function('line',...)
 end
 
+--client:close()
 --unconnected:close()
 
 return P
